@@ -1,10 +1,12 @@
+#streamlit run app.py
+
 import streamlit as st
 import pandas as pd
 import numpy as np
 import altair as alt
 
 # text/title
-st.title("Streamlit Tutorials")
+st.title("Streamlit Tutorial")
 st.text("welcome !")
 
 # header/subheader
@@ -154,6 +156,14 @@ st.balloons()
 #SidebAr
 st.sidebar.title('Churn Probabaility of a sngle CUstiner')
 
+
+html_temp = """
+<div style="background-color:tomato;padding:1.5px">
+<h1 style="color:white;text-align:center;">Richard Title </h1>
+</div><br>"""
+st.markdown(html_temp,unsafe_allow_html=True)
+
+
 #SidebAr align
 html_temp = st.sidebar.title('Churn Probabaility of a sngle CUstiner')
 st.markdown(html_temp,unsafe_allow_html=True)
@@ -175,6 +185,35 @@ df = pickle.load(open("df_saved.pkl",'rb'))
 
 st.write(df.head())
 st.text(df.head())
+
+st.table(df.head())
+st.dataframe(df.head())
+
+
+tenure=st.sidebar.slider("Number of months the customer has stayed with the company (tenure)", 1, 72, step=1)
+MonthlyCharges=st.sidebar.slider("The amount charged to the customer monthly", 0,100, step=5)
+TotalCharges=st.sidebar.slider("The total amount charged to the customer", 0,5000, step=10)
+Contract=st.sidebar.selectbox("The contract term of the customer", ('Month-to-month', 'One year', 'Two year'))
+OnlineSecurity=st.sidebar.selectbox("Whether the customer has online security or not", ('No', 'Yes', 'No internet service'))
+InternetService=st.sidebar.selectbox("Customer’s internet service provider", ('DSL', 'Fiber optic', 'No'))
+TechSupport=st.sidebar.selectbox("Whether the customer has tech support or not", ('No', 'Yes', 'No internet service'))
+
+def single_customer():
+    my_dict = {"tenure" :tenure,
+        "OnlineSecurity":OnlineSecurity,
+        "Contract": Contract,
+        "TotalCharges": TotalCharges ,
+        "InternetService": InternetService,
+        "TechSupport": TechSupport,
+        "MonthlyCharges":MonthlyCharges}
+    df_sample = pd.DataFrame.from_dict([my_dict])
+    return df_sample
+
+df = single_customer()
+
+st.table(df)
+
+
 
 
 
