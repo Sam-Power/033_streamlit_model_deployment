@@ -1,0 +1,139 @@
+1.Push the following files to the github 
+
+-saved models
+-app.py file
+-requirement.txt
+
+
+(I already did it before while hosting the app in heroku. No need additional 3 files we used for heroku. But no need to clean these file either. You can use the same github accout that already serves for heroku.)
+
+2. open an aws account
+
+3. create a new instance. (a general purpose linux machine)
+
+4. there are 7 steps to run a new instance. Till 6 th one next next next ....
+
+5. the 6 th step is configure security group. Due to we want our app to be public we should set following configurations:
+
+   (Add Rule 2 times by clicking on Add Rule button)
+
+   a. Rule-1: Select "Custom TCP Rule" and set 8501 as port range and select anywhere opt (0000) in soruce column
+   b. Rule-2: Select "Custom TCP Rule" and set 8502 as port range and select anywhere opt.
+Together with the default rule (starting with SSH) there will be 3 rules.
+
+5. Click on Review and Launch to finish 6 th step and click on Launch at the 7 th step.
+
+7. Name your key pem and download it. Then save it at the same directory with the app.py file. Click on view the instance.
+
+8. Just click the check box on the new instance then click on instance name see the details of running instance.
+
+9. Open the githbash and cd to where you keep pem file.
+
+10. Reduce the permission of pem file from w to r and ensure your key is public viewable using following command:
+
+    chmod 400 yourpemname.pem
+
+(otherwise your pem file will have permission of w but also public. And this will cause security alarm from amazon)
+
+11. check it by
+
+    ls -lia
+ 
+   you should see something like this:
+
+   7318349394623693 -r--r--r-- 1 HP 197121    1696 Jun 20 11:21 streamlit_car_price_key.pem
+
+11. Conncect to instance using ssh commands via githbash (or via another linux platform)
+
+  ssh -i streamlit_car_price_key.pem ec2-user@ec2-18-188-133-122.us-east-2.compute.amazonaws.com
+  or
+  ssh -i richard_virginia.pem ec2-user@54.210.9.136.72
+
+$ ssh -i telcom_churn.pem ec2-user@ec2-3-17-161-155.us-east-2.compute.amazonaws.com         
+
+12. type yes and enter
+
+13. sudo yum update -y (girince ilk yapılacak iş) 
+
+14. install python 3.7 to your ec2
+
+$ sudo yum install python3.7
+
+15. instal git to ec2
+
+$ sudo yum install git
+
+16. clone your git file to ec2 (name of my file is "streamlit")
+
+$ git clone https://github.com/sxxxxxxxxxxx/streamlit.git  (before that you need to copy the htpps addres from your git accout)
+https://github.com/richardclarus/car_price_streamlit_app.git
+
+17. type "ls" to ec2 and see the name of your copied file
+
+ls
+car_price_new
+
+18. cd to this file
+
+cd car_price_new
+
+19.virtual env
+
+python3 -m venv myproject
+
+20.activate venv(pip yüklemek gerekebilir -----python -m pip install -U pip-------)
+
+source myproject/bin/activate
+
+21. install required packages inside this file (streamlit) in ec2
+
+venv içersinde kurulum
+
+pip install sklearn
+pip install xgboost
+pip install streamlit
+
+ya da
+
+pip install -r requirement.txt
+
+
+I know that I used following packages for this app: streamlit-xgboosts-sklearn
+
+
+22. streamlit]$ streamlit run app.py
+
+You can now view your Streamlit app in your browser.
+
+  Network URL: http://172.31.28.28:8501
+  External URL: http://18.188.133.122:8501
+
+ You can now view your Streamlit app in your browser.
+
+  Network URL: http://172.31.21.107:8501
+  External URL: http://3.17.161.155:8501
+  http://3.17.161.155:8502/
+
+
+23. When you close the git bash no matter the instance is working the app will stop. To prevent the app from this or in other words to let it work even you exit from the gitbash you should install tmux
+
+24. "control copy" to escape
+
+25. install the tmux
+
+$ sudo yum install tmux
+
+25. create a new tmux session
+
+$ tmux new -s st_instance
+
+26. run the app 
+
+$ streamlit run app.py
+
+Then it is ok. Even if you close the gitbash or what ever you are using for linux, the app will continue to work if the ec2 is running.
+
+tmux kill-session [-t session_name]
+
+
+
